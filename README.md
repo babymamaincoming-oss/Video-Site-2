@@ -31,9 +31,12 @@ npm start
 
 # 3. (Optional) Serve on port 80 for easy LAN access
 # macOS / Linux
-sudo PORT=80 npm start
+sudo PORT=80 HOST=0.0.0.0 npm start
 # Windows PowerShell (run as Administrator)
-$env:PORT=80; npm start
+$env:PORT=80; $env:HOST='0.0.0.0'; npm start
+
+> Want to expose to your LAN on a different port? Set `HOST=0.0.0.0` along with
+> your desired `PORT`.
 ```
 
 Open in a browser:

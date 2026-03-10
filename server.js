@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = Number(process.env.PORT) || 3000;
+const HOST = process.env.HOST || '127.0.0.1';
 const PUBLIC_DIR = path.resolve(__dirname);
 
 const MIME_TYPES = {
@@ -59,7 +60,12 @@ const server = http.createServer((req, res) => {
   }
 
   fs.stat(filePath, (err, stats) => {
-    if (err || !stats.isFile()) {
+    if (err) {
+      sendError(res, err.code === 'ENOENT' ? 404 : 500, 'Not found');
+      return;
+    }
+
+    if (!stats.isFile()) {
       sendError(res, 404, 'Not found');
       return;
     }
@@ -68,6 +74,6 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+server.listen(PORT, HOST, () => {
+  console.log(`Server running at http://${HOST}:${PORT}`);
 });
