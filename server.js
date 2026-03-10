@@ -61,7 +61,8 @@ const server = http.createServer((req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (err) {
-      sendError(res, err.code === 'ENOENT' ? 404 : 500, 'Not found');
+      const status = err.code === 'ENOENT' ? 404 : 500;
+      sendError(res, status, status === 404 ? 'Not found' : 'Server error');
       return;
     }
 
