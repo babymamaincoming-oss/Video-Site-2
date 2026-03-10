@@ -34,7 +34,9 @@ npm start
 # macOS / Linux
 sudo PORT=80 HOST=0.0.0.0 npm start
 # Windows PowerShell (run as Administrator)
-$env:PORT=80; $env:HOST='0.0.0.0'; npm start
+$env:PORT='80'
+$env:HOST='0.0.0.0'
+npm start
 
 > Want to expose to your LAN on a different port? Set `HOST=0.0.0.0` along with
 > your desired `PORT`.

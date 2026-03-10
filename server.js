@@ -39,7 +39,13 @@ function serveFile(filePath, res) {
   fs.readFile(filePath, (err, data) => {
     if (err) {
       console.error('File read error:', err.message);
-      sendError(res, 500, 'Server error');
+      if (err.code === 'ENOENT') {
+        sendError(res, 404, 'Not found');
+      } else if (err.code === 'EACCES') {
+        sendError(res, 403, 'Permission denied');
+      } else {
+        sendError(res, 500, 'Server error');
+      }
       return;
     }
 
@@ -51,8 +57,8 @@ function serveFile(filePath, res) {
 const server = http.createServer((req, res) => {
   let requestPath;
   try {
-    const rawPath = req.url || '/';
-    requestPath = decodeURIComponent(rawPath.split('?')[0]);
+    const parsedUrl = new URL(req.url || '/', 'http://localhost');
+    requestPath = decodeURIComponent(parsedUrl.pathname);
   } catch (err) {
     console.error('Malformed request path:', err.message);
     sendError(res, 400, 'Bad request');
