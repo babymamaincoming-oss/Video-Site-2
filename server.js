@@ -2,7 +2,17 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = Number(process.env.PORT) || 3000;
+function resolvePort() {
+  const raw = process.env.PORT;
+  if (raw === undefined) return 3000;
+  const parsed = Number(raw);
+  if (!Number.isInteger(parsed) || parsed < 1 || parsed > 65535) {
+    throw new Error(`Invalid PORT value: ${raw}`);
+  }
+  return parsed;
+}
+
+const PORT = resolvePort();
 const HOST = process.env.HOST || '127.0.0.1';
 const PUBLIC_DIR = path.resolve(__dirname);
 
@@ -28,6 +38,7 @@ function serveFile(filePath, res) {
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
+      console.error('File read error:', err);
       sendError(res, 500, 'Server error');
       return;
     }
