@@ -15,9 +15,61 @@
       justify-content: center;
       height: 100vh;
     }
-    .video {
+
+    /* ── Login gate ─────────────────────────────────────────── */
+    #login-gate {
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 18px;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
+      padding: 2.5rem 2rem;
       width: 90%;
-      max-width: 960px;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    #login-gate h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.4rem;
+      text-align: center;
+    }
+    #login-gate label {
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+    #login-gate input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.6rem 0.75rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      margin-top: 0.25rem;
+    }
+    #login-gate button {
+      margin-top: 0.5rem;
+      padding: 0.65rem;
+      border-radius: 8px;
+      border: none;
+      background: #7f1d1d;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #login-gate button:hover { background: #991b1b; }
+    #login-error {
+      color: #fca5a5;
+      font-size: 0.88rem;
+      text-align: center;
+      min-height: 1.2em;
+    }
+
+    /* ── Video content ──────────────────────────────────────── */
+    #site-content { display: none; flex-direction: column; align-items: center; gap: 0.75rem; width: 90%; max-width: 960px; }
+    .video {
+      width: 100%;
       aspect-ratio: 16 / 9;
       border-radius: 18px;
       overflow: hidden;
@@ -28,15 +80,107 @@
       height: 100%;
       border: none;
     }
+    #logout-btn {
+      align-self: flex-end;
+      background: rgba(0,0,0,0.35);
+      border: none;
+      color: rgba(255,255,255,0.75);
+      border-radius: 8px;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #logout-btn:hover { background: rgba(0,0,0,0.55); }
   </style>
 </head>
 <body>
-  <div class="video">
-    <iframe
-      src="https://www.youtube.com/embed/WOHPMtAkfrY"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-    </iframe>
+
+  <!-- ── Login gate ──────────────────────────────────────────── -->
+  <div id="login-gate">
+    <h1>🔒 Sign In</h1>
+    <div>
+      <label for="username">Username</label>
+      <input id="username" type="text" autocomplete="username" placeholder="Username">
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="Password">
+    </div>
+    <div id="login-error"></div>
+    <button id="login-btn" type="button">Enter</button>
   </div>
+
+  <!-- ── Protected content ──────────────────────────────────── -->
+  <div id="site-content">
+    <button id="logout-btn" type="button">Log out</button>
+    <div class="video">
+      <iframe
+        src="https://www.youtube.com/embed/WOHPMtAkfrY"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <script>
+    // ⚠️  SECURITY NOTE: This is a client-side UI gate only.
+    // Anyone who views the page source can read these credentials.
+    // This provides a UI deterrent, NOT real security.
+    // TODO: For genuine protection, move authentication to a server-side
+    // layer (e.g. Cloudflare Access, Netlify Identity, or a serverless
+    // function) and remove credentials from client-side code.
+    var AUTH_USER = "admin";
+    var AUTH_PASS = "fregtator2024";
+
+    var SESSION_KEY = "fregtator_authenticated";
+
+    var gate    = document.getElementById("login-gate");
+    var content = document.getElementById("site-content");
+    var errEl   = document.getElementById("login-error");
+
+    function showContent() {
+      gate.style.display    = "none";
+      content.style.display = "flex";
+    }
+
+    function showGate(msg) {
+      content.style.display = "none";
+      gate.style.display    = "flex";
+      errEl.textContent = msg || "";
+    }
+
+    // Restore session on page load
+    if (sessionStorage.getItem(SESSION_KEY) === "1") {
+      showContent();
+    }
+
+    document.getElementById("login-btn").addEventListener("click", function () {
+      // Usernames are trimmed to forgive accidental leading/trailing spaces;
+      // passwords are intentionally not trimmed (whitespace may be significant).
+      var u = document.getElementById("username").value.trim();
+      var p = document.getElementById("password").value;
+      if (u === AUTH_USER && p === AUTH_PASS) {
+        sessionStorage.setItem(SESSION_KEY, "1");
+        showContent();
+      } else {
+        errEl.textContent = "Incorrect username or password.";
+      }
+    });
+
+    // Allow submitting with Enter key
+    ["username", "password"].forEach(function (id) {
+      document.getElementById(id).addEventListener("keydown", function (e) {
+        if (e.key === "Enter") document.getElementById("login-btn").click();
+      });
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", function () {
+      sessionStorage.removeItem(SESSION_KEY);
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+      showGate();
+    });
+  </script>
 </body>
 </html>
