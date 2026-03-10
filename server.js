@@ -38,7 +38,7 @@ function serveFile(filePath, res) {
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      console.error('File read error:', err);
+      console.error('File read error:', err.message);
       sendError(res, 500, 'Server error');
       return;
     }
@@ -54,7 +54,7 @@ const server = http.createServer((req, res) => {
     const rawPath = req.url || '/';
     requestPath = decodeURIComponent(rawPath.split('?')[0]);
   } catch (err) {
-    console.error('Malformed request path:', err);
+    console.error('Malformed request path:', err.message);
     sendError(res, 400, 'Bad request');
     return;
   }
