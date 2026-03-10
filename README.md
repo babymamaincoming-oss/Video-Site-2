@@ -6,6 +6,28 @@ Live URL: https://fregtatozcom.fun
 
 ---
 
+## 🚀 Deploying Changes
+
+After editing `index.html` (or any other file), push your changes to the **main** branch — GitHub Pages will automatically rebuild and publish the site, usually within a minute or two.
+
+```bash
+# Stage all changed files
+git add .
+
+# Commit with a short description of what you changed
+git commit -m "Update video embed / tweak styles / etc."
+
+# Push to main — GitHub Pages deploys automatically
+git push origin main
+```
+
+Then open https://fregtatozcom.fun (hard-refresh with **Ctrl+Shift+R** / **Cmd+Shift+R** to bypass the browser cache) and verify the update is live.
+
+> **Tip:** You can also watch the deployment progress under  
+> `Actions` tab → `pages build and deployment` workflow in GitHub.
+
+---
+
 ## 🖥️ Running Locally on Port 80 (LAN-accessible)
 
 Serving on port 80 lets every device on your network open the site by browsing
