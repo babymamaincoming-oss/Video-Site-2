@@ -28,11 +28,7 @@ function serveFile(filePath, res) {
 
   fs.readFile(filePath, (err, data) => {
     if (err) {
-      if (err.code === 'ENOENT') {
-        sendError(res, 404, 'Not found');
-      } else {
-        sendError(res, 500, 'Server error');
-      }
+      sendError(res, 500, 'Server error');
       return;
     }
 
@@ -76,6 +72,9 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
-  const displayHost = HOST === '0.0.0.0' ? 'localhost (or your LAN IP)' : HOST;
-  console.log(`Server running at http://${displayHost}:${PORT}`);
+  if (HOST === '0.0.0.0') {
+    console.log(`Server running on all interfaces. Connect via http://localhost:${PORT} or your LAN IP.`);
+  } else {
+    console.log(`Server running at http://${HOST}:${PORT}`);
+  }
 });
