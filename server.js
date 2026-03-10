@@ -14,7 +14,7 @@ function resolvePort() {
 
 const PORT = resolvePort();
 const HOST = process.env.HOST || '127.0.0.1';
-const PUBLIC_DIR = path.resolve(__dirname);
+const PUBLIC_DIR = path.resolve(__dirname, 'public');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -68,8 +68,13 @@ const server = http.createServer((req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (err) {
-      const status = err.code === 'ENOENT' ? 404 : 500;
-      sendError(res, status, status === 404 ? 'Not found' : 'Server error');
+      if (err.code === 'ENOENT') {
+        sendError(res, 404, 'Not found');
+      } else if (err.code === 'EACCES') {
+        sendError(res, 403, 'Permission denied');
+      } else {
+        sendError(res, 500, 'Server error');
+      }
       return;
     }
 
