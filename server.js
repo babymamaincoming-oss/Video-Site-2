@@ -41,11 +41,19 @@ function serveFile(filePath, res) {
 }
 
 const server = http.createServer((req, res) => {
-  const requestPath = decodeURIComponent(req.url.split('?')[0] || '/');
+  let requestPath;
+  try {
+    requestPath = decodeURIComponent(req.url.split('?')[0] || '/');
+  } catch {
+    sendError(res, 400, 'Bad request');
+    return;
+  }
+
   const relativePath = requestPath === '/' ? '/index.html' : requestPath;
   const filePath = path.resolve(path.join(PUBLIC_DIR, relativePath));
+  const relativeToPublic = path.relative(PUBLIC_DIR, filePath);
 
-  if (!filePath.startsWith(PUBLIC_DIR)) {
+  if (relativeToPublic.startsWith('..') || path.isAbsolute(relativeToPublic)) {
     sendError(res, 403, 'Forbidden');
     return;
   }

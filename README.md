@@ -26,13 +26,10 @@ Serve the site with a tiny Node.js server—no containers required.
 git clone https://github.com/babymamaincoming-oss/Video-Site-2.git
 cd Video-Site-2
 
-# 2. Install dependencies (none beyond Node itself, but this creates a lockfile)
-npm install
-
-# 3. Start on the default port (3000)
+# 2. Start on the default port (3000)
 npm start
 
-# 4. (Optional) Serve on port 80 for easy LAN access
+# 3. (Optional) Serve on port 80 for easy LAN access
 # macOS / Linux
 sudo PORT=80 npm start
 # Windows PowerShell (run as Administrator)
