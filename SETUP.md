@@ -1,8 +1,8 @@
-# Quick Setup Guide for brotatobrotato.org
+# Quick Setup Guide for fregtatozcom.fun
 
 ## ⚡ Quick Reference
 
-### 1️⃣ IONOS DNS Records (Add These)
+### 1️⃣ DNS Records (Add These)
 
 **A Records** (add all 4):
 ```
@@ -23,7 +23,7 @@ Navigate to: `Settings → Pages → Custom domain`
 
 Enter exactly:
 ```
-brotatobrotato.org
+fregtatozcom.fun
 ```
 
 After DNS verification succeeds, check:
@@ -33,12 +33,12 @@ After DNS verification succeeds, check:
 
 ### 3️⃣ Verification Checklist
 
-- [ ] DNS records added in IONOS
+- [ ] DNS records added at your registrar
 - [ ] Custom domain configured in GitHub Pages
 - [ ] DNS check passed (green checkmark in GitHub)
 - [ ] HTTPS enforced (checkbox enabled)
-- [ ] https://brotatobrotato.org loads correctly
-- [ ] https://www.brotatobrotato.org redirects to apex domain
+- [ ] https://fregtatozcom.fun loads correctly
+- [ ] https://www.fregtatozcom.fun redirects to apex domain
 - [ ] Browser shows HTTPS padlock (secure connection)
 
 ### ⏱️ Timeline
@@ -52,7 +52,7 @@ After DNS verification succeeds, check:
 
 Visit: https://www.whatsmydns.net/
 
-Enter: `brotatobrotato.org`
+Enter: `fregtatozcom.fun`
 
 Type: `A`
 
