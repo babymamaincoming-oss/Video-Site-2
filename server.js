@@ -76,5 +76,6 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`Server running at http://${HOST}:${PORT}`);
+  const displayHost = HOST === '0.0.0.0' ? 'localhost (or your LAN IP)' : HOST;
+  console.log(`Server running at http://${displayHost}:${PORT}`);
 });
