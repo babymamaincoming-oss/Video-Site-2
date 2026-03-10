@@ -53,7 +53,8 @@ const server = http.createServer((req, res) => {
   try {
     const rawPath = req.url || '/';
     requestPath = decodeURIComponent(rawPath.split('?')[0]);
-  } catch {
+  } catch (err) {
+    console.error('Malformed request path:', err);
     sendError(res, 400, 'Bad request');
     return;
   }

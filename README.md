@@ -17,7 +17,8 @@ Serve the site with a tiny Node.js server—no containers required.
 > **Note on port 80 and permissions**  
 > On Linux/macOS, binding to ports below 1024 requires elevated privileges. Use
 > `sudo` (or run your terminal as Administrator on Windows) when setting
-> `PORT=80`.
+> `PORT=80`. On Windows, open PowerShell as Administrator and use the
+> PowerShell syntax shown below.
 
 ### Start the server
 
